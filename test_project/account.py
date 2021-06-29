@@ -48,6 +48,8 @@ class Account(object):
         return self.pwd_encode
     
     
+   
+    
         
 class RegisterAccount(object):
     """
@@ -78,6 +80,9 @@ class RegisterAccount(object):
     def read_data_from_csv_file(self, file_name):
         """
             read data from csv file
+            
+            Keyword arguments:
+                file_name: path and name of csv file to read
         """
         try:
             print ("Begin read csv file")
@@ -107,26 +112,18 @@ class RegisterAccount(object):
             raise
     
     
-    def get_list_data(self):
+    def get_list_data(self, is_encoding):
         """
             get list of data read from csv file
+            
+            Keyword arguments:
+                is_encoding: encoding password or not
+                    if is_encoding == True: return list data with encode password
+                    if is_encoding == False: return list data with no encode password
         """
-        return json.dumps({
-                "total_row":self.total_row,
-                "new_accounts":[{
-                    "id": account.id,
-                    "username": account.username,
-                    "password": account.password,
-                    "full_name": account.full_name,
-                } for account in self.accounts
-            ]})
-    
-    
-    def get_list_data_encode_pwd_base64(self):
-        """
-            get list data encode with base64
-        """
-        return json.dumps({
+        if is_encoding:
+            
+            return json.dumps({
                 "total_row":self.total_row,
                 "new_accounts":[{
                     "id": account.id,
@@ -135,7 +132,20 @@ class RegisterAccount(object):
                     "full_name": account.full_name,
                 } for account in self.accounts
             ]})
-        
+            
+        else:
+            return json.dumps({
+                    "total_row":self.total_row,
+                    "new_accounts":[{
+                        "id": account.id,
+                        "username": account.username,
+                        "password": account.password,
+                        "full_name": account.full_name,
+                    } for account in self.accounts
+                ]})
+    
+    
+            
     def get_full_name_not_null(self):
         """
             get list data with full name not null
@@ -163,7 +173,9 @@ class RegisterAccount(object):
                 writer.writerow(["id","user_name","password","full_name"])
                 
                 for account in data:
-                    writer.writerow([account.id, account.username, account.encode_pwd(), account.full_name])
+                    writer.writerow([account.id, account.username, 
+                                     account.encode_pwd(), 
+                                     account.full_name])
                     
             print ("write data to csv file successfully")
         except EOFError as err:
@@ -175,9 +187,9 @@ if __name__ == "__main__":
     #read data from csv file
     ra.read_data_from_csv_file("MOCK_DATA.csv")
     #get list of data read from csv file
-    print(ra.get_list_data())
+    print(ra.get_list_data(False))
     #get list data with encode pwd with base 64
-    print(ra.get_list_data_encode_pwd_base64())
+    print(ra.get_list_data(True))
     #get list data with full name not null
     print(ra.get_full_name_not_null())
     #write data to csv file successfully
