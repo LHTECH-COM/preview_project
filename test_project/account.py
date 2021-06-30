@@ -112,45 +112,39 @@ class RegisterAccount(object):
             raise
     
     
-    def get_list_data(self, is_encoding):
+    def get_list_data(self, is_encoding=False, is_filter_full_name=False):
         """
             get list of data read from csv file
             
-            Keyword arguments:
+            Arguments:
                 is_encoding: encoding password or not
-                    if is_encoding == True: return list data with encode password
-                    if is_encoding == False: return list data with no encode password
+                is_filter_full_name: filter with full name not null or not
         """
-        if is_encoding:
+        
+        data_filter = filter(lambda x: x.full_name != "", self.accounts) if is_filter_full_name else self.accounts
+        
             
-            return json.dumps({
-                "total_row":self.total_row,
-                "new_accounts":[{
-                    "id": account.id,
-                    "username": account.username,
-                    "password": account.encode_pwd(),
-                    "full_name": account.full_name,
-                } for account in self.accounts
-            ]})
+        return json.dumps({
+            "total_row":self.total_row,
+            "new_accounts":[{
+                "id": account.id,
+                "username": account.username,
+                "password": account.encode_pwd() if is_encoding else account.password,
+                "full_name": account.full_name,
+            } for account in data_filter
+        ]})
             
-        else:
-            return json.dumps({
-                    "total_row":self.total_row,
-                    "new_accounts":[{
-                        "id": account.id,
-                        "username": account.username,
-                        "password": account.password,
-                        "full_name": account.full_name,
-                    } for account in self.accounts
-                ]})
+        
     
     
-            
-    def get_full_name_not_null(self):
+        
+        
+    def get_full_name_with_prefix(self, pre_value=""):
         """
-            get list data with full name not null
+            get list data with full name start with a
         """
-        data = filter(lambda x: x.full_name != "", self.accounts)
+        data = filter(lambda x: x.full_name.startswith(pre_value), self.accounts)
+#         data = filter(lambda x: pre_value in x.full_name  , self.accounts)
         return json.dumps({
                 "total_row":self.total_row,
                 "new_accounts":[{
@@ -160,6 +154,8 @@ class RegisterAccount(object):
                     "full_name": account.full_name,
                 } for account in data
             ]})
+        
+    
         
     def write_data_to_csv_file(self):
         """    
@@ -187,12 +183,13 @@ if __name__ == "__main__":
     #read data from csv file
     ra.read_data_from_csv_file("MOCK_DATA.csv")
     #get list of data read from csv file
-    print(ra.get_list_data(False))
+    print(ra.get_list_data(is_encoding=False, is_filter_full_name = False))
     #get list data with encode pwd with base 64
-    print(ra.get_list_data(True))
+    print(ra.get_list_data(is_encoding=True, is_filter_full_name = False))
     #get list data with full name not null
-    print(ra.get_full_name_not_null())
+    print(ra.get_list_data(is_encoding=True, is_filter_full_name = True))
     #write data to csv file successfully
     ra.write_data_to_csv_file()
+    print(ra.get_full_name_with_prefix(pre_value='A'))
     
     
