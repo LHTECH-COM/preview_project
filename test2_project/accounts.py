@@ -92,10 +92,8 @@ class Accounts(object):
                 search_value: value search by company
         """
         data_return = self.search_by_value(search_value, COMPANY_TYPE)
-        if data_return:
-            print (data_return)
-        else:
-            print ("data not found")
+        print (data_return) if data_return else print ("Data not found")
+        
             
     def search_by_name(self, search_value = ""):
         """
@@ -104,10 +102,7 @@ class Accounts(object):
                 search_value: value search by name
         """
         data_return = self.search_by_value(search_value, NAME_TYPE)
-        if data_return:
-            print (data_return)
-        else:
-            print ("data not found")
+        print (data_return) if data_return else print ("Data not found")
             
     def search_by_user_name(self, search_value = ""):
         """
@@ -116,10 +111,7 @@ class Accounts(object):
                 search_value: value search by user name
         """
         data_return = self.search_by_value(search_value, USERNAME_TYPE)
-        if data_return:
-            print (data_return)
-        else:
-            print ("data not found")
+        print (data_return) if data_return else print ("Data not found")
         
 ac = Accounts()
 ac.get_api_account_list()
