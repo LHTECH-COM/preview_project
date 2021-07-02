@@ -11,12 +11,10 @@ class Accounts(object):
     """
         A class is information of user
         
-        
         Attributes
         -------------------------
         accounts: array of str
             list of user read from api
-            
             
         Methods
         ------------------------
@@ -48,7 +46,8 @@ class Accounts(object):
             else:
                 response.raise_for_status()
         except requests.exceptions.HTTPError as http_err:
-            print (http_err)
+#             print (http_err)
+            raise
         except requests.exceptions.ConnectionError as conn_err:
             print (conn_err)
         except requests.exceptions.Timeout as tim_err:
@@ -87,6 +86,11 @@ class Accounts(object):
         return data_filter
     
     def search_by_company(self, search_value = ""):
+        """
+            search data by key company
+            Arguments:
+                search_value: value search by company
+        """
         data_return = self.search_by_value(search_value, COMPANY_TYPE)
         if data_return:
             print (data_return)
@@ -94,6 +98,11 @@ class Accounts(object):
             print ("data not found")
             
     def search_by_name(self, search_value = ""):
+        """
+            search data by key name
+            Arguments:
+                search_value: value search by name
+        """
         data_return = self.search_by_value(search_value, NAME_TYPE)
         if data_return:
             print (data_return)
@@ -101,6 +110,11 @@ class Accounts(object):
             print ("data not found")
             
     def search_by_user_name(self, search_value = ""):
+        """
+            search data by key user name
+            Arguments:
+                search_value: value search by user name
+        """
         data_return = self.search_by_value(search_value, USERNAME_TYPE)
         if data_return:
             print (data_return)
