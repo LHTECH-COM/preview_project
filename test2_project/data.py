@@ -48,7 +48,8 @@ class Data(object):
                 else:
                     response.raise_for_status()
             except requests.HTTPError as http_err:
-                print (http_err)
+#                 print (http_err)
+                raise
             except requests.ConnectionError as conn_err:
                 print (conn_err)
             except requests.Timeout as tim_err:
@@ -94,7 +95,6 @@ class Data(object):
             if "Incorrect Base64 data try" not in data:
                 data_write.append(data)
         
-        
         try:
             with open("data_new.csv", mode="w") as csv_file:
                 writer = csv.writer(csv_file, delimiter=",")
@@ -105,11 +105,12 @@ class Data(object):
             
         except EOFError as err:
             print (err)
-            
-da = Data()
-da.read_data_from_csv_file("data.csv")
 
-print(da.get_list_data())
-da.write_data_to_csv_file()
+if __name__ == "__main__":       
+    da = Data()
+    da.read_data_from_csv_file("data.csv")
+    
+    print(da.get_list_data())
+    da.write_data_to_csv_file()
 
 
