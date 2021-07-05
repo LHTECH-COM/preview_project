@@ -81,6 +81,11 @@ class Data(object):
     def get_list_data_decode(self):
         """
         get list data decode with base64
+        
+        Returns:
+        ----------------
+        list
+            list of data decode with base64
         """
         self.data_decode = list(self.decode_base64(data) for data in self.data_list)
         
@@ -92,6 +97,11 @@ class Data(object):
         -------------------------
         is_success: bool, optional
             decode with base64 success or not, default is all data decode
+            
+        Returns:
+        ------------------------------
+        list:
+            list of data 
         """
         data_decode = self.data_decode
         if is_success:

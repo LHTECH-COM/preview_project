@@ -92,6 +92,11 @@ class Users(object):
         ---------------------
         search_value: str
             value want to search
+            
+        Returns:
+        --------------------------
+        list
+            list of user search by company name
         """
         data_filter = self.search_by_value(search_value, COMPANY_TYPE)
         print (data_filter) if data_filter else print("data not found")
@@ -104,6 +109,11 @@ class Users(object):
         -----------------------
         search_value: str
             value want to search
+            
+        Returns:
+        --------------------------
+        list
+            list of user search by company name
         """
         data_filter = self.search_by_value(search_value, NAME_TYPE)
         print (data_filter) if data_filter else print("data not found")
@@ -116,6 +126,11 @@ class Users(object):
         -----------------
         search_value: str
             value want to search
+            
+        Returns:
+        --------------------------
+        list
+            list of user search by company name
         """
         data_filter = self.search_by_value(search_value, USERNAME_TYPE)
         print (data_filter) if data_filter else print("data not found")
