@@ -89,16 +89,14 @@ class Data(object):
         """
             write data decode successful to csv file
         """
-        data_write = []
+        
         data_list = self.data_decode_list
-        for data in data_list:
-            if "Incorrect Base64 data try" not in data:
-                data_write.append(data)
+        new_list = list(x for x in data_list if 'Incorrect Base64 data try' not in x)
         
         try:
             with open("data_new.csv", mode="w") as csv_file:
                 writer = csv.writer(csv_file, delimiter=",")
-                for da in data_write:
+                for da in new_list:
                     writer.writerow([da])
                     
             print ("write data to csv file successfully")

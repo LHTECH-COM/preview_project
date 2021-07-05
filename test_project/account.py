@@ -9,6 +9,7 @@ PWD_INDEX = 2
 FULL_NAME_INDEX = 3
 
 class Account(object):
+    
     """
     A class is represent account of user
     
@@ -81,7 +82,7 @@ class RegisterAccount(object):
         """
             read data from csv file
             
-            Keyword arguments:
+            arguments:
                 file_name: path and name of csv file to read
         """
         try:
@@ -176,8 +177,9 @@ class RegisterAccount(object):
             print ("write data to csv file successfully")
         except EOFError as err:
             print ("write data to csv file fail")
-            
-        
+
+   
+    
 if __name__ == "__main__":
     ra = RegisterAccount()
     #read data from csv file

@@ -101,6 +101,7 @@ class AccountRegister():
     
     #get row have duplicate id
     def get_duplicate_row(self):
+        
         data = filter(lambda x: self.count_id(x.id) > 1, self.accounts)
         return [json.dumps({
                 'id':account.id,

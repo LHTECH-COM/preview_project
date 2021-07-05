@@ -41,8 +41,10 @@ class Accounts(object):
             response = requests.get(API_URL)
             if response.status_code == 200:
                 response_data = response.json()
-                for data in response_data:
-                    self.accounts.append(data)
+#                 for data in response_data:
+#                     self.accounts.append(data)
+#                     
+                self.accounts = list(data for data in response_data)
             else:
                 response.raise_for_status()
         except requests.exceptions.HTTPError as http_err:
@@ -65,21 +67,15 @@ class Accounts(object):
         """
         #list of array data
         data_filter = []
+        
         for data in self.accounts:
             try:
                 if search_type == COMPANY_TYPE:
-                    if data["company"]["name"] == search_value:
-                        data_filter.append(data)
-                        continue
-                if search_type == NAME_TYPE:
-                    if data["name"].startswith(search_value):
-                        data_filter.append(data)
-                        continue
-                if search_type == USERNAME_TYPE:
-                    if data["username"] == search_value:
-                        data_filter.append(data)
-                        continue
-                
+                    data_filter = list(x for x in self.accounts if x["company"]["name"] == search_value)
+                elif search_type == NAME_TYPE:
+                    data_filter = list(x for x in self.accounts if x["name"].startswith(search_value))
+                elif search_type == USERNAME_TYPE:
+                    data_filter = list(x for x in self.accounts if x["username"] == search_value)
             except KeyError as key_err:
                 pass
             
