@@ -35,6 +35,7 @@ class Users(object):
         self.email = email
         self.gender = gender
         self.state = state
+        self.full_name = ""
         
         
     def get_full_name(self):
@@ -47,6 +48,17 @@ class Users(object):
             full name of user
         """
         return f'{self.first_name} {self.last_name}'
+    
+    def get_full_name_capitalize(self):
+        """
+        get full name of user
+        
+        Returns:
+        ------------------------
+        str
+            full name of user
+        """
+        return f'{self.first_name.capitalize()} {self.last_name.capitalize()}'
         
 class RegisterUser(object):
     """
@@ -65,6 +77,9 @@ class RegisterUser(object):
         read data from csv file
     merge_data():
         merge data from 2 csv file
+        
+    filter_by_full_name(search_value):
+        filter by full name
     write_data_to_csv_file():
         write data to csv file
     """
@@ -215,7 +230,7 @@ class RegisterUser(object):
             for da2 in data_list2:
                 if da1.id == da2.id:
                     da1.state = da2.state
-                    
+                    da1.full_name = da1.get_full_name()
         
         
         return [json.dumps({
@@ -227,7 +242,44 @@ class RegisterUser(object):
             "gender": user.gender,
             "state": user.state,
             }) for user in self.user_lists_data]
+        
+        
+    def filter_by_full_name(self, search_value=""):
+        """
+        search user by full name start with search_value
+        
+        Paramater:
+        --------------------------
+        search_value: str
+            string to search
+        """
+        data_filter = list(data for data in self.user_lists_data if data.get_full_name().upper().startswith(search_value))
+        return [json.dumps({
+            "id": user.id,
+            "first_name": user.first_name,
+            "last_name":user.last_name,
+            "full_name": user.get_full_name(),
+            "email": user.email,
+            "gender": user.gender,
+            "state": user.state,
+            }) for user in data_filter]
 
+
+    def capital_full_name(self):
+        """
+        capital full name
+        """
+        return [json.dumps({
+            "id": user.id,
+            "first_name": user.first_name,
+            "last_name":user.last_name,
+            "full_name": user.get_full_name_capitalize(),
+            "email": user.email,
+            "gender": user.gender,
+            "state": user.state,
+            }) for user in self.user_lists_data]
+
+        
     def write_data_to_csv_file(self):
         """
         write data to csv file
@@ -249,6 +301,10 @@ class RegisterUser(object):
 if __name__ == "__main__":
     re = RegisterUser()
     print(re.merge_data("data71.csv","data72.csv"))
+    print("filter full name start with A")
+    print(re.filter_by_full_name("A"))
+    print("capital full name")
+    print(re.capital_full_name())
     re.write_data_to_csv_file()
 
     
