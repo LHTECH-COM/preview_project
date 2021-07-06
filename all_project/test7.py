@@ -214,7 +214,7 @@ class RegisterUser(object):
         for da1 in self.user_lists_data:
             for da2 in data_list2:
                 if da1.id == da2.id:
-                    da1.__dict__.update(da2.__dict__)
+                    da1.state = da2.state
                     
         
         
