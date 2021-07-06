@@ -61,6 +61,8 @@ class RegisterUser(object):
     ---------------------
     read_data_from_csv_file(file_name):
         read data from csv file
+    read_data_from_csv_file_option2(file_name):
+        read data from csv file
     merge_data():
         merge data from 2 csv file
     write_data_to_csv_file():
@@ -90,41 +92,96 @@ class RegisterUser(object):
         """
         try:
             with open(file_name, "r") as file:
-#                 reader = csv.reader(file, delimiter=",")
                 reader = csv.DictReader(file)
                 for re in reader:
                     try:
                         id = re["id"]
-                    except KeyError as err:
+                    except KeyError:
                         id = ""
-                        
+                    
                     try:
                         first_name = re["first_name"]
-                    except KeyError as err:
+                    except KeyError:
                         first_name = ""
                     
                     try:
                         last_name = re["last_name"]
-                    except KeyError as err:
+                    except KeyError:
                         last_name = ""
                         
                     try:
                         email = re["email"]
-                    except KeyError as err:
+                    except KeyError:
                         email = ""
                         
                     try:
                         gender = re["gender"]
-                    except KeyError as err:
+                    except KeyError:
                         gender = ""
                         
                     try:
                         state = re["state"]
-                    except KeyError as err:
+                    except KeyError:
                         state = ""
+                    
                         
                     
                     self.user_lists_data.append(Users(id, first_name, last_name, email, gender, state))
+            return self.user_lists_data
+                        
+            print("read data from csv file successfully")
+                
+        except IOError as err:
+            print("read data from csv file fail")
+            
+            
+    def read_data_from_csv_file_option2(self, file_name):
+        """
+        read data from csv file 
+        parameters:
+        ---------------------------
+        file_name: str
+            the file location of csv file
+        
+        Returns:
+        -------------------------
+        list:
+            list of user read from csv file
+        """
+        try:
+            with open(file_name, "r") as file:
+                reader = csv.reader(file, delimiter = ",")
+                ID_INDEX = -1
+                FIRST_NAME_INDEX = -1
+                LAST_NAME_INDEX = -1
+                EMAIL_INDEX = -1
+                GENDER_INDEX = -1
+                STATE_INDEX = -1
+                for index, row in enumerate(reader):
+                    if index == 0:
+                        for header_id, header_value in enumerate(row):
+                            if header_value == "id":
+                                ID_INDEX = header_id
+                            if header_value == "first_name":
+                                FIRST_NAME_INDEX = header_id
+                            if header_value == "last_name":
+                                LAST_NAME_INDEX = header_id
+                            if header_value == "email":
+                                EMAIL_INDEX = header_id
+                            if header_value == "gender":
+                                GENDER_INDEX = header_id
+                            if header_value == "state":
+                                STATE_INDEX = header_id
+                            
+                    else:
+                        id = "" if ID_INDEX == -1 else row[ID_INDEX]
+                        first_name = "" if ID_INDEX == -1 else row[FIRST_NAME_INDEX]
+                        last_name = "" if ID_INDEX == -1 else row[LAST_NAME_INDEX]
+                        email = "" if ID_INDEX == -1 else row[EMAIL_INDEX]
+                        gender = "" if ID_INDEX == -1 else row[GENDER_INDEX]
+                        state = "" if ID_INDEX == -1 else row[STATE_INDEX]
+                    
+                        self.user_lists_data.append(Users(id, first_name, last_name, email, gender, state))
             return self.user_lists_data
                         
             print("read data from csv file successfully")
@@ -152,12 +209,14 @@ class RegisterUser(object):
             list of user
         """
         self.user_lists_data = self.read_data_from_csv_file(file_1)
-        data_list2 = self.read_data_from_csv_file(file_2)
+        data_list2 = self.read_data_from_csv_file_option2(file_2)
         
         for da1 in self.user_lists_data:
             for da2 in data_list2:
                 if da1.id == da2.id:
-                    da1.state = da2.state
+                    da1.__dict__.update(da2.__dict__)
+                    
+        
         
         return [json.dumps({
             "id": user.id,
@@ -191,6 +250,7 @@ if __name__ == "__main__":
     re = RegisterUser()
     print(re.merge_data("data71.csv","data72.csv"))
     re.write_data_to_csv_file()
+
     
     
     
