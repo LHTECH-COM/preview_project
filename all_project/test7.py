@@ -105,6 +105,8 @@ class RegisterUser(object):
         list:
             list of user read from csv file
         """
+        #array list store user information
+        data_list = []
         try:
             with open(file_name, "r") as file:
                 reader = csv.DictReader(file)
@@ -141,8 +143,8 @@ class RegisterUser(object):
                     
                         
                     
-                    self.user_lists_data.append(Users(id, first_name, last_name, email, gender, state))
-            return self.user_lists_data
+                    data_list.append(Users(id, first_name, last_name, email, gender, state))
+            return data_list
                         
             print("read data from csv file successfully")
                 
@@ -163,6 +165,8 @@ class RegisterUser(object):
         list:
             list of user read from csv file
         """
+        #array list store user information
+        data_list = []
         try:
             with open(file_name, "r") as file:
                 reader = csv.reader(file, delimiter = ",")
@@ -177,27 +181,27 @@ class RegisterUser(object):
                         for header_id, header_value in enumerate(row):
                             if header_value == "id":
                                 ID_INDEX = header_id
-                            if header_value == "first_name":
+                            elif header_value == "first_name":
                                 FIRST_NAME_INDEX = header_id
-                            if header_value == "last_name":
+                            elif header_value == "last_name":
                                 LAST_NAME_INDEX = header_id
-                            if header_value == "email":
+                            elif header_value == "email":
                                 EMAIL_INDEX = header_id
-                            if header_value == "gender":
+                            elif header_value == "gender":
                                 GENDER_INDEX = header_id
-                            if header_value == "state":
+                            elif header_value == "state":
                                 STATE_INDEX = header_id
                             
                     else:
                         id = "" if ID_INDEX == -1 else row[ID_INDEX]
-                        first_name = "" if ID_INDEX == -1 else row[FIRST_NAME_INDEX]
-                        last_name = "" if ID_INDEX == -1 else row[LAST_NAME_INDEX]
-                        email = "" if ID_INDEX == -1 else row[EMAIL_INDEX]
-                        gender = "" if ID_INDEX == -1 else row[GENDER_INDEX]
-                        state = "" if ID_INDEX == -1 else row[STATE_INDEX]
+                        first_name = "" if FIRST_NAME_INDEX == -1 else row[FIRST_NAME_INDEX]
+                        last_name = "" if LAST_NAME_INDEX == -1 else row[LAST_NAME_INDEX]
+                        email = "" if EMAIL_INDEX == -1 else row[EMAIL_INDEX]
+                        gender = "" if GENDER_INDEX == -1 else row[GENDER_INDEX]
+                        state = "" if STATE_INDEX == -1 else row[STATE_INDEX]
                     
-                        self.user_lists_data.append(Users(id, first_name, last_name, email, gender, state))
-            return self.user_lists_data
+                        data_list.append(Users(id, first_name, last_name, email, gender, state))
+            return data_list
                         
             print("read data from csv file successfully")
                 
